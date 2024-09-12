@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Result to SQL Insert Converter</title>
+    <style type="text/css">
+        body{width: calc(100% - 30px); padding: 10px;}
+        input{padding: 4px; width: 98%;}
+        button{padding: 15px; cursor: pointer;margin-top: 130px;}
+        textarea{width: 98%; height:100%; padding: 4px;}
+        h2{padding-bottom: 0; margin-bottom: 0;}
+    </style>
+</head>
+<body>
+
+    <a href="./"><< Menu</a>
+
+    <h1>Query Result to SQL Insert Converter</h1>
+    <div>
+        <h2>Instruções</h2>
+            <ol>
+                <li>Execute a consulta com \G</li>
+                <li>Copie o resultado e cole abaixo</li>
+                <li>Informe o nome da tabela</li>
+            </ol>
+    </div>
+
+    <div style="width: 45%; margin-bottom: 15px;">
+        <label for="tableName">Nome da Tabela:</label><br>
+        <input type="text" id="tableName" name="tableName">
+    </div>
+
+    <div style="width: 45%; height:260px; float: left;">
+        <label for="sqlString">SQL Query Result:</label><br>
+        <textarea id="sqlString"></textarea><br>  
+    </div>
+
+    <div style="width: 10%; height:260px; float: left; text-align: center;">
+        <button type="button" onclick="convertToInsert()">Convert</button>
+    </div>
+
+    <div style="width: 45%; height:260px; float: left;">
+        <label for="sqlString">SQL Insert:</label><br>
+        <textarea id="output"></textarea>
+    </div>
+
+    <script>
+        function convertToInsert() {
+            const tableName = document.getElementById('tableName').value.trim();
+            const sqlString = document.getElementById('sqlString').value.trim();
+            const regex = /\*{27} \d+\. row \*{27}/;
+            const lines = sqlString.split('\n');
+
+            var fields = [];
+            var values = [];
+            var insertQuery = '';
+            var newRow = false;
+
+            lines.forEach(line => {
+
+                line = line.trim();
+
+                if (regex.test(line) && values.length) {
+
+                    insertQuery += `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${values.join(', ')});\n`;
+                    fields = [];
+                    values = [];
+
+                } else {
+
+                    if (line.includes(':')) {
+                        let [field, value] = line.split(':', 2);
+                        field = field.trim();
+                        value = value.trim();
+                        fields.push(field);
+                        if (value === 'NULL') {
+                            values.push('NULL');
+                        } else if (value === '') {
+                            values.push("''");
+                        } else {
+                            if (isNaN(value) || value.includes('.')) {
+                                value = `'${value.replace(/'/g, "\\'")}'`;
+                            }
+                            values.push(value);
+                        }
+                    }
+
+                }
+
+            });
+
+            insertQuery += `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${values.join(', ')});`;
+            document.getElementById('output').textContent = insertQuery;
+        }
+    </script>
+</body>
+</html>

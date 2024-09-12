@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Online File</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-language" content="pt_br">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <link rel="stylesheet" href="css/style-min.css">
+</head>
+<body>
+
+	<div class="menu">		
+		<a href="./"><< Menu</a>
+	</div>
+
+    <div id="innerBody" class="innerBody setBgImage">
+        <div class="container-fluid viewerInnerBodyDiv">
+            <div class="row-fluid">
+                <div class="center">
+                    <div class="span12 fileDiffMainContainer">
+                        <h1 class="fileViewHead">File Difference</h1>
+                        <form name="filediff">
+                            <div class="span6 original margin0">
+                                <label id="F1" class="fileup">File 1</label>
+                                <div id="file1Div">
+                                    <textarea class="span12 allNumberConverter" id="file1"></textarea>
+                                </div>
+                                <input type="button" id="clear1" class="window_label" value="Reset" onclick="clear12('file1')">
+                            </div>
+                            <div class="span6 changed">
+                                <label id="F2" class="fileup">File 2</label>
+                                <div id="file2Div">
+                                    <textarea class="span12 allNumberConverter" id="file2"></textarea>
+                                </div>
+                                <input type="button" id="clear1" class="window_label" value="Reset" onclick="clear12('file2')">
+                            </div>
+                            <div class="custombtn">
+                                <input id="diff" type="button" value="Difference" onclick="makeFileDiff()" class="wtd span4">
+                                <div class="option">
+                                    <fieldset>
+                                        <legend>Option</legend>
+                                        <input type="checkbox" name="showonlydiff" id="showonlydiff" checked onclick="showOnlyDiff()">
+                                        <span>Show Only Difference</span>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="diffinfo">
+                            <span class="successmessage"></span>
+                            <ul>
+                                <li class="replace">Difference <span id="R"></span>
+                                </li>
+                                <li class="empty">Empty <span id="E"></span>
+                                </li>
+                                <li class="insert">Insert <span id="I"></span>
+                                </li>
+                                <li class="delete">Delete <span id="D"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="showDiff" class="span12 difftable "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="js/pubfig.min.js" data-cfasync="false" async></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/difflib.js"></script>
+    <script src="js/diffview.js"></script>
+    <script src="js/makefilediff.js"></script>
+    <!-- <script src="js/common_load_with_home.js"></script> -->
+    <script src="js/allviewer.js"></script>
+    <script>
+        $(document).ready(function() {
+            setDefaultData();
+            conditionalCode();
+            $("#me").click();
+        });
+    </script>
+</body>
+</html>
